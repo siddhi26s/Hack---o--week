@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Library Book Catalogue</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f9;
+text-align:center;
+padding:30px;
+}
+
+.container{
+width:500px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+input{
+padding:10px;
+width:70%;
+margin:10px;
+}
+
+button{
+padding:10px 15px;
+margin:5px;
+border:none;
+background:#3498db;
+color:white;
+cursor:pointer;
+border-radius:5px;
+}
+
+button:hover{
+background:#2980b9;
+}
+
+#bookList{
+margin-top:20px;
+text-align:left;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>📚 Library Book Catalogue</h2>
+
+<input type="text" id="bookTitle" placeholder="Enter Book Title">
+
+<br>
+
+<button onclick="addBook()">Add Book</button>
+<button onclick="removeBook()">Remove Book</button>
+<button onclick="searchBook()">Search Book</button>
+<button onclick="displayBooks()">Display Books</button>
+
+<h3 id="message"></h3>
+
+<div id="bookList"></div>
+
+</div>
+
+<script>
+
+const MAX_BOOKS = 10
+
+let books = new Array(MAX_BOOKS)
+
+let count = 0
+
+
+function addBook(){
+
+let title = document.getElementById("bookTitle").value
+
+if(title===""){
+document.getElementById("message").innerText="Enter book title"
+return
+}
+
+if(count >= MAX_BOOKS){
+document.getElementById("message").innerText="Library is full!"
+return
+}
+
+books[count] = title
+count++
+
+document.getElementById("message").innerText="Book added successfully"
+
+displayBooks()
+
+}
+
+
+function removeBook(){
+
+let title = document.getElementById("bookTitle").value
+
+let index = -1
+
+for(let i=0;i<count;i++){
+
+if(books[i].toLowerCase() === title.toLowerCase()){
+index = i
+break
+}
+
+}
+
+if(index === -1){
+document.getElementById("message").innerText="Book not found"
+return
+}
+
+for(let i=index;i<count-1;i++){
+
+books[i] = books[i+1]
+
+}
+
+count--
+
+document.getElementById("message").innerText="Book removed"
+
+displayBooks()
+
+}
+
+
+function searchBook(){
+
+let title = document.getElementById("bookTitle").value
+
+for(let i=0;i<count;i++){
+
+if(books[i].toLowerCase() === title.toLowerCase()){
+
+document.getElementById("message").innerText=
+"Book found at position "+(i+1)
+
+return
+}
+
+}
+
+document.getElementById("message").innerText="Book not found"
+
+}
+
+
+function displayBooks(){
+
+let list=""
+
+for(let i=0;i<count;i++){
+
+list += (i+1) + ". " + books[i] + "<br>"
+
+}
+
+document.getElementById("bookList").innerHTML=list
+
+}
+
+</script>
+
+</body>
+</html>
