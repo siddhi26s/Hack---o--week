@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weather Dashboard with Pagination</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background: linear-gradient(135deg, #cce7ff, #e0f7fa);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+
+.dashboard {
+  max-width:950px;
+  width:95%;
+  padding:30px;
+  border-radius:20px;
+  background:white;
+  box-shadow:0 15px 40px rgba(0,0,0,0.2);
+}
+
+.dashboard h1 {
+  text-align:center;
+  margin-bottom:20px;
+  font-size:2rem;
+  color:#222;
+}
+
+.city-selector {
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:15px;
+  margin-bottom:30px;
+}
+
+.city-selector button {
+  padding:8px 18px;
+  border:none;
+  border-radius:12px;
+  background:#4dabf7;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.city-selector button.active,
+.city-selector button:hover {
+  background:#1c7ed6;
+}
+
+.weather-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+  gap:25px;
+}
+
+/* Card style */
+.weather-card {
+  border-radius:20px;
+  color:white;
+  padding:20px 15px;
+  text-align:center;
+  box-shadow:0 5px 25px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+
+.weather-card:hover {
+  transform: translateY(-5px);
+  box-shadow:0 10px 35px rgba(0,0,0,0.2);
+}
+
+.weather-card h2 { margin:10px 0 5px; font-size:1.3rem; }
+.weather-card .temp { font-size:2rem; font-weight:600; margin:5px 0; }
+.weather-card .condition { font-size:1rem; margin:5px 0; }
+.weather-card .wind { font-size:0.9rem; margin:5px 0; }
+.weather-card .updated { font-size:0.8rem; margin-top:10px; opacity:0.8; }
+.weather-card .icon { font-size:3rem; margin-bottom:10px; }
+
+/* Gradient color codes */
+.hot { background: linear-gradient(135deg, #ff9a76, #ff6b6b); }
+.cold { background: linear-gradient(135deg, #74c0fc, #4dabf7); }
+.cloudy { background: linear-gradient(135deg, #adb5bd, #868e96); }
+.rainy { background: linear-gradient(135deg, #6c5ce7, #a29bfe); }
+
+/* Pagination buttons */
+.pagination {
+  text-align:center;
+  margin-top:30px;
+}
+
+.pagination button {
+  padding:8px 15px;
+  margin:5px;
+  border:none;
+  border-radius:10px;
+  background:#4dabf7;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.pagination button.active,
+.pagination button:hover {
+  background:#1c7ed6;
+}
+
+@media(max-width:480px){
+  .dashboard h1 { font-size:1.6rem; }
+  .weather-card h2 { font-size:1.1rem; }
+  .weather-card .temp { font-size:1.6rem; }
+  .weather-card .icon { font-size:2.5rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="dashboard">
+  <h1>🌤 Weather Dashboard</h1>
+
+  <!-- City selector -->
+  <div class="city-selector">
+    <button class="active">Page 1</button>
+    <button>Page 2</button>
+    <button>Page 3</button>
+  </div>
+
+  <!-- Weather grid -->
+  <div class="weather-grid" id="page1">
+    <div class="weather-card hot">
+      <div class="icon">☀️</div>
+      <h2>New York</h2>
+      <div class="temp">28°C</div>
+      <div class="condition">Sunny</div>
+      <div class="wind">Wind: 12 km/h</div>
+      <div class="updated">Last updated: 10:30 AM</div>
+    </div>
+    <div class="weather-card rainy">
+      <div class="icon">🌧️</div>
+      <h2>London</h2>
+      <div class="temp">18°C</div>
+      <div class="condition">Rainy</div>
+      <div class="wind">Wind: 8 km/h</div>
+      <div class="updated">Last updated: 09:50 AM</div>
+    </div>
+  </div>
+
+  <div class="weather-grid" id="page2" style="display:none;">
+    <div class="weather-card cloudy">
+      <div class="icon">⛅</div>
+      <h2>Tokyo</h2>
+      <div class="temp">22°C</div>
+      <div class="condition">Cloudy</div>
+      <div class="wind">Wind: 10 km/h</div>
+      <div class="updated">Last updated: 11:00 AM</div>
+    </div>
+    <div class="weather-card cold">
+      <div class="icon">❄️</div>
+      <h2>Moscow</h2>
+      <div class="temp">-2°C</div>
+      <div class="condition">Snowy</div>
+      <div class="wind">Wind: 15 km/h</div>
+      <div class="updated">Last updated: 08:20 AM</div>
+    </div>
+  </div>
+
+  <div class="weather-grid" id="page3" style="display:none;">
+    <div class="weather-card hot">
+      <div class="icon">🌞</div>
+      <h2>Sydney</h2>
+      <div class="temp">30°C</div>
+      <div class="condition">Sunny</div>
+      <div class="wind">Wind: 14 km/h</div>
+      <div class="updated">Last updated: 12:15 PM</div>
+    </div>
+    <div class="weather-card rainy">
+      <div class="icon">🌦️</div>
+      <h2>Delhi</h2>
+      <div class="temp">32°C</div>
+      <div class="condition">Rainy</div>
+      <div class="wind">Wind: 10 km/h</div>
+      <div class="updated">Last updated: 11:50 AM</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const buttons = document.querySelectorAll('.city-selector button');
+const pages = ['page1','page2','page3'];
+
+buttons.forEach((btn, index) => {
+  btn.addEventListener('click', () => {
+    // hide all pages
+    pages.forEach(id => document.getElementById(id).style.display = 'none');
+    // show selected page
+    document.getElementById(pages[index]).style.display = 'grid';
+    // active button styling
+    buttons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
