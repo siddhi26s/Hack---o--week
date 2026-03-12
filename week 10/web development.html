@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CodeBootcamp</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+scroll-behavior:smooth;
+}
+
+body{
+background:linear-gradient(135deg,#e9e6ff,#f7f5ff);
+color:#333;
+}
+
+/* NAVBAR */
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 8%;
+background:white;
+position:sticky;
+top:0;
+box-shadow:0 4px 15px rgba(0,0,0,0.08);
+z-index:1000;
+}
+
+nav h2{
+color:#7b5cff;
+}
+
+nav ul{
+display:flex;
+gap:25px;
+list-style:none;
+}
+
+nav ul li a{
+text-decoration:none;
+color:#444;
+font-weight:500;
+}
+
+nav ul li a:hover{
+color:#7b5cff;
+}
+
+/* BUTTON */
+
+.btn{
+background:#7b5cff;
+color:white;
+padding:12px 22px;
+border-radius:6px;
+text-decoration:none;
+display:inline-block;
+margin-top:10px;
+}
+
+/* HERO */
+
+.hero{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:120px 8%;
+flex-wrap:wrap;
+}
+
+.hero h1{
+font-size:48px;
+margin-bottom:15px;
+}
+
+.hero span{
+color:#7b5cff;
+}
+
+.hero img{
+width:360px;
+}
+
+/* FEATURES */
+
+.features{
+padding:80px 8%;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+text-align:center;
+}
+
+/* CURRICULUM */
+
+.curriculum{
+padding:80px 8%;
+}
+
+.curriculum h2{
+text-align:center;
+margin-bottom:40px;
+}
+
+.week-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.week{
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* PRICING */
+
+.pricing{
+padding:80px 8%;
+text-align:center;
+}
+
+.price-card{
+background:#7b5cff;
+color:white;
+padding:40px;
+border-radius:15px;
+display:inline-block;
+}
+
+/* FORM */
+
+.enroll{
+padding:80px 8%;
+text-align:center;
+}
+
+form{
+max-width:400px;
+margin:auto;
+display:grid;
+gap:15px;
+margin-top:20px;
+}
+
+input{
+padding:12px;
+border-radius:6px;
+border:1px solid #ddd;
+}
+
+/* CONTACT */
+
+.contact{
+padding:80px 8%;
+text-align:center;
+background:white;
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:30px;
+background:#2c2c2c;
+color:white;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+.hero{
+flex-direction:column;
+text-align:center;
+}
+
+.hero img{
+margin-top:40px;
+width:260px;
+}
+
+nav ul{
+display:none;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav>
+
+<h2>CodeBootcamp</h2>
+
+<ul>
+
+<li><a href="#home">Home</a></li>
+<li><a href="#features">Features</a></li>
+<li><a href="#curriculum">Curriculum</a></li>
+<li><a href="#pricing">Pricing</a></li>
+<li><a href="#enroll">Enroll</a></li>
+<li><a href="#contact">Contact</a></li>
+
+</ul>
+
+</nav>
+
+<!-- HERO -->
+
+<section class="hero" id="home">
+
+<div>
+
+<h1>Become a <span>Web Developer</span> in 6 Weeks</h1>
+
+<p>Learn HTML, CSS, JavaScript and React by building real world projects.</p>
+
+<a href="#pricing" class="btn">Start Learning</a>
+
+</div>
+
+<img src="https://cdn-icons-png.flaticon.com/512/2721/2721293.png">
+
+</section>
+
+<!-- FEATURES -->
+
+<section class="features" id="features">
+
+<div class="card">
+<h3>Project Based Learning</h3>
+<p>Create real websites and applications.</p>
+</div>
+
+<div class="card">
+<h3>Expert Mentors</h3>
+<p>Learn from industry professionals.</p>
+</div>
+
+<div class="card">
+<h3>Certification</h3>
+<p>Receive a bootcamp completion certificate.</p>
+</div>
+
+</section>
+
+<!-- CURRICULUM -->
+
+<section class="curriculum" id="curriculum">
+
+<h2>6 Week Bootcamp Curriculum</h2>
+
+<div class="week-grid">
+
+<div class="week">
+<h3>Week 1</h3>
+<p>HTML Fundamentals</p>
+</div>
+
+<div class="week">
+<h3>Week 2</h3>
+<p>CSS + Responsive Design</p>
+</div>
+
+<div class="week">
+<h3>Week 3</h3>
+<p>JavaScript Basics</p>
+</div>
+
+<div class="week">
+<h3>Week 4</h3>
+<p>Advanced JavaScript</p>
+</div>
+
+<div class="week">
+<h3>Week 5</h3>
+<p>React Development</p>
+</div>
+
+<div class="week">
+<h3>Week 6</h3>
+<p>Final Project + Deployment</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- PRICING -->
+
+<section class="pricing" id="pricing">
+
+<h2>Bootcamp Pricing</h2>
+
+<br>
+
+<div class="price-card">
+
+<h1>₹9,999</h1>
+
+<p>Full 6 Week Web Development Bootcamp</p>
+
+<br>
+
+<a href="upi://pay?pa=yourupi@upi&pn=CodeBootcamp&am=9999&cu=INR" class="btn">
+
+Pay With UPI
+
+</a>
+
+</div>
+
+</section>
+
+<!-- ENROLL -->
+
+<section class="enroll" id="enroll">
+
+<h2>Enroll Now</h2>
+
+<form action="https://formsubmit.co/your@email.com" method="POST">
+
+<input type="text" name="name" placeholder="Full Name" required>
+
+<input type="email" name="email" placeholder="Email Address" required>
+
+<input type="tel" name="phone" placeholder="Phone Number" required>
+
+<button class="btn">Submit Enrollment</button>
+
+</form>
+
+</section>
+
+<!-- CONTACT -->
+
+<section class="contact" id="contact">
+
+<h2>Contact Us</h2>
+
+<br>
+
+<p>Email: codebootcamp@gmail.com</p>
+
+<p>Phone: +91 9000000000</p>
+
+<p>Location: India</p>
+
+</section>
+
+<footer>
+
+© 2026 CodeBootcamp. All rights reserved.
+
+</footer>
+
+</body>
+
+</html>
