@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online MCQ Exam</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f5f7fb;
+}
+
+header{
+background:#2c3e50;
+color:white;
+padding:15px;
+text-align:center;
+}
+
+.container{
+display:flex;
+height:90vh;
+}
+
+.questionArea{
+flex:3;
+padding:30px;
+}
+
+.palette{
+flex:1;
+background:white;
+border-left:2px solid #ddd;
+padding:20px;
+overflow:auto;
+}
+
+.questionBox{
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.options button{
+display:block;
+width:100%;
+padding:12px;
+margin:10px 0;
+border:none;
+border-radius:6px;
+cursor:pointer;
+background:#ecf0f1;
+}
+
+.options button:hover{
+background:#3498db;
+color:white;
+}
+
+.controls{
+margin-top:20px;
+}
+
+.controls button{
+padding:10px 20px;
+margin:5px;
+border:none;
+background:#3498db;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+.palette button{
+width:40px;
+height:40px;
+margin:5px;
+border:none;
+border-radius:5px;
+cursor:pointer;
+background:#bdc3c7;
+}
+
+.answered{
+background:#2ecc71 !important;
+color:white;
+}
+
+.review{
+background:#f1c40f !important;
+}
+
+.timer{
+font-size:20px;
+font-weight:bold;
+color:#e74c3c;
+}
+
+#result{
+text-align:center;
+padding:40px;
+display:none;
+}
+
+#qstatus{
+margin-bottom:10px;
+font-weight:bold;
+color:#555;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>Online MCQ Exam</h2>
+<div class="timer">Time Left: <span id="time">10:00</span></div>
+</header>
+
+<div class="container">
+
+<div class="questionArea">
+
+<div class="questionBox">
+
+<div id="qstatus"></div>
+
+<h3 id="question"></h3>
+
+<div class="options" id="options"></div>
+
+<div class="controls">
+<button onclick="prevQ()">Previous</button>
+<button onclick="markReview()">Mark Review</button>
+<button onclick="nextQ()">Next</button>
+<button onclick="submitQuiz()">Submit</button>
+</div>
+
+</div>
+
+</div>
+
+<div class="palette">
+<h3>Questions</h3>
+<div id="palette"></div>
+</div>
+
+</div>
+
+<div id="result">
+
+<h2>Exam Completed</h2>
+<h3 id="score"></h3>
+
+<canvas id="chart" width="300"></canvas>
+
+</div>
+
+<script>
+
+const quiz = [
+
+{q:"Capital of France?",options:["Paris","Berlin","Rome","Madrid"],answer:0},
+
+{q:"Largest planet?",options:["Earth","Mars","Jupiter","Saturn"],answer:2},
+
+{q:"2+5=?",options:["6","7","8","9"],answer:1},
+
+{q:"Who invented bulb?",options:["Newton","Tesla","Edison","Einstein"],answer:2},
+
+{q:"Sun is?",options:["Planet","Star","Galaxy","Asteroid"],answer:1},
+
+{q:"HTML stands for?",options:["Hyper Text Markup Language","HighText Machine","Hyper Tabular","None"],answer:0},
+
+{q:"Water formula?",options:["CO2","H2O","O2","NaCl"],answer:1},
+
+{q:"Fastest animal?",options:["Tiger","Cheetah","Horse","Dog"],answer:1},
+
+{q:"India capital?",options:["Delhi","Mumbai","Kolkata","Chennai"],answer:0},
+
+{q:"Computer brain?",options:["RAM","CPU","GPU","ROM"],answer:1}
+
+]
+
+let current=0
+let answers=new Array(quiz.length).fill(null)
+let review=new Array(quiz.length).fill(false)
+
+function loadQ(){
+
+let q=quiz[current]
+
+document.getElementById("question").innerText=(current+1)+". "+q.q
+
+let optHTML=""
+
+q.options.forEach((o,i)=>{
+optHTML+=`<button onclick="selectAns(${i})">${o}</button>`
+})
+
+document.getElementById("options").innerHTML=optHTML
+
+updatePalette()
+
+updateStatus()
+
+}
+
+function updateStatus(){
+
+let total=quiz.length
+let currentQ=current+1
+let remaining=total-currentQ
+
+document.getElementById("qstatus").innerText=
+`Question ${currentQ} / ${total} | Remaining: ${remaining}`
+
+}
+
+function selectAns(i){
+
+answers[current]=i
+updatePalette()
+
+}
+
+function nextQ(){
+
+if(current<quiz.length-1) current++
+loadQ()
+
+}
+
+function prevQ(){
+
+if(current>0) current--
+loadQ()
+
+}
+
+function markReview(){
+
+review[current]=true
+updatePalette()
+
+}
+
+function updatePalette(){
+
+let html=""
+
+quiz.forEach((q,i)=>{
+
+let cls=""
+
+if(answers[i]!=null) cls="answered"
+
+if(review[i]) cls="review"
+
+html+=`<button class="${cls}" onclick="gotoQ(${i})">${i+1}</button>`
+
+})
+
+document.getElementById("palette").innerHTML=html
+
+}
+
+function gotoQ(i){
+
+current=i
+loadQ()
+
+}
+
+function submitQuiz(){
+
+let score=0
+
+answers.forEach((a,i)=>{
+if(a==quiz[i].answer) score++
+})
+
+document.querySelector(".container").style.display="none"
+document.getElementById("result").style.display="block"
+
+document.getElementById("score").innerText="Score: "+score+" / "+quiz.length
+
+new Chart(document.getElementById("chart"),{
+
+type:"pie",
+
+data:{
+labels:["Correct","Wrong"],
+datasets:[{
+data:[score,quiz.length-score],
+backgroundColor:["green","red"]
+}]
+}
+
+})
+
+}
+
+loadQ()
+
+// TIMER
+
+let total=600
+
+setInterval(()=>{
+
+total--
+
+let m=Math.floor(total/60)
+let s=total%60
+
+document.getElementById("time").innerText=
+`${m}:${s<10?"0":""}${s}`
+
+if(total<=0) submitQuiz()
+
+},1000)
+
+</script>
+
+</body>
+</html>
