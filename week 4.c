@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloom Cart</title>
+
+<style>
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #E6E6FA; /* Lavender background */
+  color: #444;
+}
+
+/* Navigation */
+nav {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  background: #D8BFD8; /* Slightly darker lavender */
+  padding: 15px 0;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  z-index: 1000;
+}
+
+nav a {
+  margin: 0 20px;
+  text-decoration: none;
+  color: #4B0082;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+nav a:hover {
+  color: #800080;
+}
+
+/* Sections */
+section {
+  padding: 100px 10%;
+}
+
+h2 {
+  text-align: center;
+  color: #4B0082;
+  margin-bottom: 40px;
+}
+
+/* Hero Section */
+.hero {
+  background: url('https://png.pngtree.com/thumb_back/fw800/background/20241009/pngtree-light-lavender-background-adorned-with-elegant-image_16342261.jpg') center/cover no-repeat; /* Updated lavender roses image */
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+}
+
+.hero-content {
+  background: rgba(75, 0, 130, 0.6);
+  padding: 40px;
+  border-radius: 10px;
+}
+
+.hero h1 {
+  font-size: 48px;
+  margin: 0;
+}
+
+.hero p {
+  font-size: 20px;
+}
+
+/* Products */
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+}
+
+.card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 20px;
+  text-align: center;
+}
+
+.price {
+  color: #800080;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+button {
+  padding: 8px 16px;
+  border: none;
+  background: #BA55D3;
+  color: white;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin: 5px;
+}
+
+button:hover {
+  background: #9932CC;
+}
+
+/* About */
+.about {
+  background: #DDA0DD;
+  text-align: center;
+  border-radius: 15px;
+  padding: 40px;
+}
+
+/* Contact */
+.contact form {
+  max-width: 500px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.contact input,
+.contact textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+/* Cart */
+.cart {
+  background: #E0B0FF;
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 500px;
+  margin: auto;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+/* Clear Cart Button */
+#clearCartBtn {
+  display: block;
+  margin: 0 auto 20px auto;
+  background: #FF69B4;
+}
+
+#clearCartBtn:hover {
+  background: #FF1493;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 30px;
+  background: #D8BFD8;
+  color: #4B0082;
+}
+
+/* Responsive */
+@media(max-width:768px) {
+  .hero h1 {
+    font-size: 32px;
+  }
+
+  nav a {
+    margin: 0 10px;
+    font-size: 14px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <a href="#home">Home</a>
+  <a href="#shop">Shop</a>
+  <a href="#about">About</a>
+  <a href="#contact">Contact</a>
+  <a href="#cart">Cart</a>
+</nav>
+
+<!-- Home -->
+<section id="home" class="hero">
+  <div class="hero-content">
+    <h1>Bloom Cart</h1>
+    <p>Fresh Flowers for Every Occasion</p>
+  </div>
+</section>
+
+<!-- Shop -->
+<section id="shop">
+  <h2>Shop Flowers</h2>
+  <div class="products">
+    
+    <div class="card" data-name="Red Roses" data-price="1999">
+      <img src="https://i.pinimg.com/736x/8d/3d/e4/8d3de4eda1807addc9aa250d970f3c50.jpg" alt="Roses">
+      <div class="card-content">
+        <h3>Red Roses</h3>
+        <p class="price">₹1,999</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="card" data-name="Tulips" data-price="1499">
+      <img src="https://i.pinimg.com/736x/39/7f/4d/397f4da64c9b39d12e061085db33fac5.jpg" alt="Tulips">
+      <div class="card-content">
+        <h3>Tulips</h3>
+        <p class="price">₹1,499</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="card" data-name="Pink Roses" data-price="1299">
+      <img src="https://blooming.com.my/wp-content/uploads/2020/12/2000Z.jpg" alt="Sunflowers">
+      <div class="card-content">
+        <h3>Pink Roses</h3>
+        <p class="price">₹1,299</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="card" data-name=" Lilies" data-price="2299">
+      <img src="https://i.pinimg.com/736x/1c/3d/83/1c3d830948c209f84a434032b70141cf.jpg" alt="Lilies">
+      <div class="card-content">
+        <h3> Lilies</h3>
+        <p class="price">₹2,299</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="card" data-name=" Orchids" data-price="2499">
+      <img src="https://tse2.mm.bing.net/th/id/OIP.LnGlXukMkmUxlnY5KowoGAHaJQ?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Orchids">
+      <div class="card-content">
+        <h3> Orchids</h3>
+        <p class="price">₹2,499</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="card" data-name="Mixed Bouquet" data-price="1899">
+      <img src="https://www.sweetlifeandco.my/wp-content/uploads/2023/01/ANGELA-Mix-Bouquet-SweetLife-Co-Penang-Florist-Malaysia-2.jpg" alt="Mixed Bouquet">
+      <div class="card-content">
+        <h3>Mixed Bouquet</h3>
+        <p class="price">₹1,899</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="card" data-name="Blue Hydrangeas" data-price="1799">
+      <img src="https://i.pinimg.com/originals/86/fc/a7/86fca7cb8eadf4071dd98f06f3c72b7b.png" alt="Lavender Dreams">
+      <div class="card-content">
+        <h3>Blue Hydrangeas</h3>
+        <p class="price">₹1,799</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="card" data-name="Cherry Blossom " data-price="2999">
+      <img src="https://i.pinimg.com/originals/28/7a/6b/287a6b588fb09672dd8153d830c94d84.jpg" alt="Pink Peonies">
+      <div class="card-content">
+        <h3>Cheery Blossom</h3>
+        <p class="price">₹2,999</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="card" data-name="Lavender Bliss" data-price="1699">
+      <img src="https://confettiandroses.com/wp-content/uploads/2024/05/Wildflower-Lavender-Bouquet-1.jpeg" alt="Lavender Bliss">
+      <div class="card-content">
+        <h3>Lavender Bliss</h3>
+        <p class="price">₹1,699</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+
+<div class="card" data-name="Peonies and Lilly" data-price="1699">
+      <img src="https://s-media-cache-ak0.pinimg.com/originals/b5/ff/33/b5ff33fbec392407156696bdf2cc6f30.jpg" alt="Lavender Bliss">
+      <div class="card-content">
+        <h3>"Peonies and Lilly</h3>
+        <p class="price">₹1,699</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+
+<div class="card" data-name="Lotus" data-price="1699">
+      <img src="https://i.pinimg.com/736x/34/43/f8/3443f885021f8c7473b5201168c6b308.jpg" alt="Lavender Bliss">
+      <div class="card-content">
+        <h3>Lotus</h3>
+        <p class="price">₹1,699</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+
+<div class="card" data-name="white Roses" data-price="1699">
+      <img src="https://i.etsystatic.com/iap/617969/5616729554/iap_400x400.5616729554_dc5kvk45.jpg?version=0" alt="Lavender Bliss">
+      <div class="card-content">
+        <h3>"white Roses</h3>
+        <p class="price">₹1,699</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+<!-- About -->
+<section id="about">
+  <h2>About Us</h2>
+  <div class="about">
+    <p>At Bloom Cart, we believe flowers speak the language of love, joy, and celebration. We deliver fresh, handpicked blooms crafted into elegant arrangements for every special moment. Our mission is to bring beauty and happiness right to your doorstep.</p>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="contact">
+  <h2>Contact Us</h2>
+  <form>
+    <input type="text" placeholder="Your Name">
+    <input type="email" placeholder="Your Email">
+    <textarea rows="5" placeholder="Your Message"></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+</section>
+
+<!-- Cart -->
+<section id="cart">
+  <h2>Your Cart</h2>
+  <button id="clearCartBtn">Clear Cart</button>
+  <div class="cart" id="cartDiv">
+    <p>Cart is empty 🛒</p>
+  </div>
+</section>
+
+<footer>
+  🌸 Follow us: Instagram | Facebook | Pinterest  
+  <br><br>
+  © 2026 Bloom Cart
+</footer>
+
+<script>
+const cart = {};
+const cartDiv = document.getElementById('cartDiv');
+const addButtons = document.querySelectorAll('.card button'); 
+const clearCartBtn = document.getElementById('clearCartBtn');
+
+addButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const card = button.parentElement.parentElement;
+    const name = card.dataset.name;
+    const price = parseInt(card.dataset.price);
+
+    if (cart[name]) {
+      cart[name].quantity += 1;
+    } else {
+      cart[name] = { price: price, quantity: 1 };
+    }
+    renderCart();
+  });
+});
+
+clearCartBtn.addEventListener('click', () => {
+  for (let item in cart) {
+    delete cart[item];
+  }
+  renderCart();
+});
+
+function renderCart() {
+  cartDiv.innerHTML = '';
+  let totalItems = 0;
+  let totalPrice = 0;
+
+  if (Object.keys(cart).length === 0) {
+    cartDiv.innerHTML = '<p>Cart is empty 🛒</p>';
+    return;
+  }
+
+  for (let item in cart) {
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+    div.innerHTML = <span>${item} x ${cart[item].quantity}</span><span>₹${cart[item].price * cart[item].quantity}</span>;
+    cartDiv.appendChild(div);
+
+    totalItems += cart[item].quantity;
+    totalPrice += cart[item].price * cart[item].quantity;
+  }
+
+  const totalDiv = document.createElement('div');
+  totalDiv.className = 'cart-item';
+  totalDiv.style.fontWeight = 'bold';
+  totalDiv.innerHTML = <span>Total Items: ${totalItems}</span><span>Total: ₹${totalPrice}</span>;
+  cartDiv.appendChild(totalDiv);
+}
+</script>
+
+</body>
+</html>
