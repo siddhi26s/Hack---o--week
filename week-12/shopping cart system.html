@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Shopping Cart System</title>
+
+<style>
+:root {
+    --primary: #7b2cbf;
+    --secondary: #9d4edd;
+    --bg: #f5edff;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg, #e6d6ff, #c8a2ff);
+}
+
+/* Container */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+/* Header */
+h1 {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 25px;
+}
+
+/* Form */
+.form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* Buttons */
+.actions {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: var(--secondary);
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: var(--primary);
+}
+
+/* Table */
+.table-container {
+    margin-top: 25px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background: var(--primary);
+    color: white;
+}
+
+tr {
+    animation: fadeIn 0.3s ease-in;
+}
+
+tr:nth-child(even) {
+    background: #efe6ff;
+}
+
+/* Delete button */
+.delete-btn {
+    background: crimson;
+    padding: 5px 10px;
+}
+
+/* Total */
+.total {
+    margin-top: 15px;
+    text-align: right;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .actions {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Shopping Cart System</h1>
+
+    <div class="form">
+        <input id="name" placeholder="Item Name">
+        <input id="price" type="number" placeholder="Price">
+        <input id="qty" type="number" placeholder="Quantity">
+    </div>
+
+    <div class="actions">
+        <button onclick="addHead()">Add Head</button>
+        <button onclick="addTail()">Add Tail</button>
+        <button onclick="removeHead()">Remove Head</button>
+        <button onclick="removeTail()">Remove Tail</button>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price (₹)</th>
+                    <th>Qty</th>
+                    <th>Subtotal</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="cart"></tbody>
+        </table>
+    </div>
+
+    <div class="total">Total: ₹<span id="total">0</span></div>
+</div>
+
+<script>
+class Node {
+    constructor(name, price, qty) {
+        this.name = name;
+        this.price = price;
+        this.qty = qty;
+        this.next = null;
+    }
+}
+
+class Cart {
+    constructor() {
+        this.head = null;
+        this.tail = null;
+    }
+
+    addHead(name, price, qty) {
+        const node = new Node(name, price, qty);
+        if (!this.head) this.head = this.tail = node;
+        else {
+            node.next = this.head;
+            this.head = node;
+        }
+    }
+
+    addTail(name, price, qty) {
+        const node = new Node(name, price, qty);
+        if (!this.tail) this.head = this.tail = node;
+        else {
+            this.tail.next = node;
+            this.tail = node;
+        }
+    }
+
+    removeHead() {
+        if (!this.head) return;
+        this.head = this.head.next;
+        if (!this.head) this.tail = null;
+    }
+
+    removeTail() {
+        if (!this.head) return;
+
+        if (this.head === this.tail) {
+            this.head = this.tail = null;
+            return;
+        }
+
+        let curr = this.head;
+        while (curr.next !== this.tail) curr = curr.next;
+
+        curr.next = null;
+        this.tail = curr;
+    }
+
+    deleteItem(name) {
+        if (!this.head) return;
+
+        if (this.head.name === name) {
+            this.removeHead();
+            return;
+        }
+
+        let curr = this.head;
+        while (curr.next && curr.next.name !== name) {
+            curr = curr.next;
+        }
+
+        if (curr.next) {
+            if (curr.next === this.tail) this.tail = curr;
+            curr.next = curr.next.next;
+        }
+    }
+
+    toArray() {
+        let arr = [];
+        let curr = this.head;
+        while (curr) {
+            arr.push(curr);
+            curr = curr.next;
+        }
+        return arr;
+    }
+
+    save() {
+        localStorage.setItem("cart", JSON.stringify(this.toArray()));
+    }
+
+    load() {
+        let data = JSON.parse(localStorage.getItem("cart")) || [];
+        data.forEach(item => this.addTail(item.name, item.price, item.qty));
+    }
+
+    display() {
+        let curr = this.head;
+        let html = "";
+        let total = 0;
+
+        while (curr) {
+            let subtotal = curr.price * curr.qty;
+            total += subtotal;
+
+            html += `
+            <tr>
+                <td>${curr.name}</td>
+                <td>${curr.price}</td>
+                <td>${curr.qty}</td>
+                <td>${subtotal}</td>
+                <td><button class="delete-btn" onclick="deleteItem('${curr.name}')">Delete</button></td>
+            </tr>`;
+            curr = curr.next;
+        }
+
+        document.getElementById("cart").innerHTML = html || `<tr><td colspan="5">Cart is empty</td></tr>`;
+        document.getElementById("total").innerText = total;
+
+        this.save();
+    }
+}
+
+const cart = new Cart();
+cart.load();
+cart.display();
+
+function getInput() {
+    let name = document.getElementById("name").value;
+    let price = parseFloat(document.getElementById("price").value);
+    let qty = parseInt(document.getElementById("qty").value);
+
+    if (!name || !price || !qty) {
+        alert("Enter valid details");
+        return null;
+    }
+    return { name, price, qty };
+}
+
+function addHead() {
+    let item = getInput();
+    if (!item) return;
+    cart.addHead(item.name, item.price, item.qty);
+    cart.display();
+}
+
+function addTail() {
+    let item = getInput();
+    if (!item) return;
+    cart.addTail(item.name, item.price, item.qty);
+    cart.display();
+}
+
+function removeHead() {
+    cart.removeHead();
+    cart.display();
+}
+
+function removeTail() {
+    cart.removeTail();
+    cart.display();
+}
+
+function deleteItem(name) {
+    cart.deleteItem(name);
+    cart.display();
+}
+</script>
+
+</body>
+</html>
