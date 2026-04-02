@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Creative Mini Browser</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    text-align: center;
+  }
+
+  h1 {
+    margin-top: 15px;
+  }
+
+  .controls {
+    margin: 15px;
+  }
+
+  input {
+    padding: 10px;
+    width: 300px;
+    border-radius: 25px;
+    border: none;
+    outline: none;
+  }
+
+  button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 20px;
+    background: #ff7eb3;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background: #ff4f81;
+  }
+
+  .browser {
+    width: 85%;
+    margin: auto;
+    background: white;
+    border-radius: 15px;
+    padding: 10px;
+    color: black;
+  }
+
+  iframe {
+    width: 100%;
+    height: 350px;
+    border-radius: 10px;
+    border: none;
+  }
+
+  .stacks {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px;
+  }
+
+  .stack {
+    width: 40%;
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  .item {
+    background: rgba(255,255,255,0.3);
+    margin: 5px;
+    padding: 6px;
+    border-radius: 6px;
+    transition: transform 0.2s;
+  }
+
+  .item:hover {
+    transform: scale(1.05);
+  }
+</style>
+</head>
+
+<body>
+
+<h1>🌐 Creative Mini Browser</h1>
+
+<div class="controls">
+  <input id="urlInput" placeholder="Enter URL or search...">
+  <br>
+  <button onclick="visit()">Visit</button>
+  <button onclick="goBack()">⬅ Back</button>
+  <button onclick="goForward()">➡ Forward</button>
+</div>
+
+<h3>Current Page: <span id="currentPage"></span></h3>
+
+<div class="browser">
+  <iframe id="viewer"></iframe>
+</div>
+
+<div class="stacks">
+  <div class="stack">
+    <h3>⬅ Back Stack</h3>
+    <div id="backStack"></div>
+  </div>
+
+  <div class="stack">
+    <h3>➡ Forward Stack</h3>
+    <div id="forwardStack"></div>
+  </div>
+</div>
+
+<script>
+class BrowserHistory {
+  constructor(homepage) {
+    this.current = homepage;
+    this.backStack = [];
+    this.forwardStack = [];
+
+    this.loadHistory();
+    this.updateUI();
+  }
+
+  visit(input) {
+    const url = this.processInput(input);
+
+    this.backStack.push(this.current);
+    this.current = url;
+    this.forwardStack = [];
+
+    this.saveHistory();
+    this.updateUI();
+  }
+
+  back() {
+    if (this.backStack.length === 0) return;
+
+    this.forwardStack.push(this.current);
+    this.current = this.backStack.pop();
+
+    this.saveHistory();
+    this.updateUI();
+  }
+
+  forward() {
+    if (this.forwardStack.length === 0) return;
+
+    this.backStack.push(this.current);
+    this.current = this.forwardStack.pop();
+
+    this.saveHistory();
+    this.updateUI();
+  }
+
+  processInput(input) {
+    if (input.includes(".")) {
+      if (!input.startsWith("http")) {
+        return "https://" + input;
+      }
+      return input;
+    } else {
+      return "https://www.google.com/search?q=" + input;
+    }
+  }
+
+  updateUI() {
+    document.getElementById("currentPage").innerText = this.current;
+    document.getElementById("viewer").src = this.current;
+
+    document.getElementById("backStack").innerHTML =
+      this.backStack.map(i => `<div class="item">${i}</div>`).join("");
+
+    document.getElementById("forwardStack").innerHTML =
+      this.forwardStack.map(i => `<div class="item">${i}</div>`).join("");
+  }
+
+  saveHistory() {
+    localStorage.setItem("browserHistory", JSON.stringify({
+      current: this.current,
+      back: this.backStack,
+      forward: this.forwardStack
+    }));
+  }
+
+  loadHistory() {
+    const data = JSON.parse(localStorage.getItem("browserHistory"));
+    if (data) {
+      this.current = data.current;
+      this.backStack = data.back;
+      this.forwardStack = data.forward;
+    }
+  }
+}
+
+const browser = new BrowserHistory("https://example.com");
+
+function visit() {
+  const input = document.getElementById("urlInput").value;
+  if (input) {
+    browser.visit(input);
+    document.getElementById("urlInput").value = "";
+  }
+}
+
+function goBack() {
+  browser.back();
+}
+
+function goForward() {
+  browser.forward();
+}
+</script>
+
+</body>
+</html>
